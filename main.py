@@ -62,7 +62,7 @@ def create_artists_by_sessionId(session):
             length FLOAT,
             sessionId INT,
             itemInSession INT,
-            PRIMARY KEY (sessionId, itemInSession, artist)
+            PRIMARY KEY (sessionId, itemInSession)
         );
     """
     try:
@@ -82,7 +82,7 @@ def create_artists_by_userid(session):
             artist TEXT,
             song TEXT,
             firstName TEXT,
-            lastName TEXT
+            lastName TEXT,
             userId INT,
             sessionId INT,
             itemInSession INT,
@@ -139,5 +139,6 @@ def drop_tables(session):
         rows = session.execute(query)
     except Exception as e:
         print(e)
+        
 if __name__ == "__main__":
     init()
