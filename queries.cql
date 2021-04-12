@@ -5,15 +5,15 @@ WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };
 --1. Give me the artist, song title and song's length in the music app history that was heard during sessionId = 338, and itemInSession = 4
 
 CREATE TABLE IF NOT EXISTS artists_by_sessionId (
+    sessionId INT,
+    itemInSession INT,
     artist TEXT,
     song TEXT,
     length FLOAT,
-    sessionId INT,
-    itemInSession INT,
     PRIMARY KEY (sessionId, itemInSession)
 );
 
-INSERT INTO artists_by_sessionId (artist, song, length, sessionId, itemInSession) VALUES (%s, %s, %s, %s, %s)
+INSERT INTO artists_by_sessionId (sessionId, itemInSession, artist, song, length) VALUES (%s, %s, %s, %s, %s)
 
 SELECT
     artist,
@@ -28,17 +28,17 @@ WHERE
 -- 2. Give me only the following: name of artist, song (sorted by itemInSession) and user (first and last name) for userid = 10, sessionid = 182
 
 CREATE TABLE IF NOT EXISTS artists_by_userid (
+    userId INT,
+    sessionId INT,
     artist TEXT,
     song TEXT,
     firstName TEXT,
     lastName TEXT,
-    userId INT,
-    sessionId INT,
     itemInSession INT,
     PRIMARY KEY ((userid, sessionid), itemInSession, firstName, lastName)
 );
 
-INSERT INTO artists_by_userid (artist, song, firstName, lastName, userId, sessionId, itemInSession) VALUES (%s, %s, %s, %s, %s, %s, %s)
+INSERT INTO artists_by_userid (sessionId, itemInSession, artist, song, firstName, lastName, userId) VALUES (%s, %s, %s, %s, %s, %s, %s)
 
 SELECT
     artist,
@@ -55,13 +55,13 @@ WHERE
 
 CREATE TABLE IF NOT EXISTS artists_by_song (
     song TEXT,
+    userId INT,
     firstName TEXT,
     lastName TEXT,
-    userId INT,
     PRIMARY KEY (song, userId)
 );
 
-INSERT INTO artists_by_song (song, firstName, lastName, userId) VALUES (%s, %s, %s, %s)
+INSERT INTO artists_by_song (userId, song, firstName, lastName) VALUES (%s, %s, %s, %s)
 
 
 SELECT
